@@ -1,0 +1,17 @@
+{
+  "resourceName": "CrimeDataFile",
+  "policyUUID": "150adaa6",
+  "bucketName": "brenda-tech",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE",
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Trigger591de068",
+  "groupAccess": {}
+}
