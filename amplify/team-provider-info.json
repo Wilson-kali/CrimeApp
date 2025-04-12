@@ -27,10 +27,21 @@
         "S3Trigger591de068": {
           "deploymentBucketName": "amplify-crimeapp-dev-a17ef-deployment",
           "s3Key": "amplify-builds/S3Trigger591de068-68383046436c4b61584d-build.zip"
+        },
+        "SignUpCrimeApp": {
+          "deploymentBucketName": "amplify-crimeapp-dev-a17ef-deployment",
+          "s3Key": "amplify-builds/SignUpCrimeApp-686d7378694d786a7368-build.zip"
+        },
+        "CrimeAppLogin": {
+          "deploymentBucketName": "amplify-crimeapp-dev-a17ef-deployment",
+          "s3Key": "amplify-builds/CrimeAppLogin-4d45413649496d78634f-build.zip"
         }
       },
       "storage": {
         "CrimeDataFile": {}
+      },
+      "api": {
+        "brendaApi": {}
       }
     }
   }

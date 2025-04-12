@@ -1,22 +1,75 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './src/screens/HomeScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import SignUpScreen from './src/screens/SignUpScreen';
-import ReportScreen from './src/screens/ReportScreen';
+import Welcome from './app/pages/Welcome.js';
+import SignUp from './app/pages/SignUp.js';
+import Login from './app/pages/Login.js';
+import ConfirmSignUp from './app/pages/ConfirmSignUp.js';
+import { AuthProvider } from './app/contexts/AuthContext';
+import { Animated, View, ActivityIndicator } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { Amplify } from 'aws-amplify';
+import awsconfig from './src/aws-exports';
+Amplify.configure(awsconfig);
+
+// Import your new dashboard screens
+import UserDashboard from './app/pages/UserDashboard';
+import AdminDashboard from './app/pages/AdminDashboard';
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [initialRoute, setInitialRoute] = useState(null);
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const role = await AsyncStorage.getItem('role');
+        if (role) {
+          setRole(role);
+          setInitialRoute(role === 'admin' ? 'AdminDashboard' : 'UserDashboard');
+        } else {
+          setInitialRoute('Login');
+        }
+      } catch (error) {
+        console.error('Error checking login status:', error);
+        setInitialRoute('Login');
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  if (initialRoute === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#2E3A59" />
+        <View style={{ marginTop: 10 }}>
+          <Animated.Text style={{ fontSize: 18 }}>Checking session...</Animated.Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Report" component={ReportScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <PaperProvider>
+        <NavigationContainer>
+          <Animated.View style={{ flex: 1, backgroundColor: '#F0F8FF' }}>
+            <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Welcome" component={Welcome} />
+              <Stack.Screen name="SignUp" component={SignUp} />
+              <Stack.Screen name="Login" component={Login} />
+              <Stack.Screen name="ConfirmSignUp" component={ConfirmSignUp} />
+              <Stack.Screen name="AdminDashboard" component={AdminDashboard} />
+              <Stack.Screen name="UserDashboard" component={UserDashboard} />
+            </Stack.Navigator>
+          </Animated.View>
+        </NavigationContainer>
+      </PaperProvider>
+    </AuthProvider>
   );
 }
