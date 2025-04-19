@@ -68,7 +68,7 @@ const SignUp = ({ navigation }) => {
     console.log('🔄 Signing up...');
 
     try {
-      const response = await fetch('https://cwzl7wr9l5.execute-api.us-east-1.amazonaws.com/dev/items', {  // Replace with your actual API endpoint
+      const response = await fetch('#', {  // Replace with your actual API endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

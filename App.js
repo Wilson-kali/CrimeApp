@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Welcome from './app/pages/Welcome.js';
-import SignUp from './app/pages/SignUp.js';
-import Login from './app/pages/Login.js';
-import ConfirmSignUp from './app/pages/ConfirmSignUp.js';
+import Welcome from './app/screens/Welcome.js';
+import SignUp from './app/screens/SignUp.js';
+import Login from './app/screens/Login.js';
+import ConfirmSignUp from './app/screens/ConfirmSignUp.js';
 import { AuthProvider } from './app/contexts/AuthContext';
 import { Animated, View, ActivityIndicator } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -15,8 +15,8 @@ import awsconfig from './src/aws-exports';
 Amplify.configure(awsconfig);
 
 // Import your new dashboard screens
-import UserDashboard from './app/pages/UserDashboard';
-import AdminDashboard from './app/pages/AdminDashboard';
+import UserDashboard from './app/screens/UserDashboard.js';
+import AdminDashboard from './app/screens/AdminDashboard.js';
 
 const Stack = createStackNavigator();
 

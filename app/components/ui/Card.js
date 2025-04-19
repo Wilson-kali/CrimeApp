@@ -1,19 +1,54 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function Card({ title, value, trend, alert, style }) {
+  const [activeTab, setActiveTab] = useState('Value'); // State to track which tab is selected
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
   return (
     <View style={[styles.card, style]}>
       <Text style={styles.title}>{title}</Text>
-      <View style={styles.valueContainer}>
-        <Text style={styles.value}>{value}</Text>
-        {trend === 'up' && (
-          <Text style={[styles.trend, styles.trendUp]}>↑</Text>
+
+      {/* Tab Bar for switching between sections */}
+      <View style={styles.tabBar}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'Value' && styles.activeTab]}
+          onPress={() => handleTabChange('Value')}
+        >
+          <Text style={[styles.tabText, activeTab === 'Value' && styles.activeTabText]}>
+            Value
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'Trend' && styles.activeTab]}
+          onPress={() => handleTabChange('Trend')}
+        >
+          <Text style={[styles.tabText, activeTab === 'Trend' && styles.activeTabText]}>
+            Trend
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'Alert' && styles.activeTab]}
+          onPress={() => handleTabChange('Alert')}
+        >
+          <Text style={[styles.tabText, activeTab === 'Alert' && styles.activeTabText]}>
+            Alert
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Render content based on selected tab */}
+      <View style={styles.content}>
+        {activeTab === 'Value' && <Text style={styles.value}>{value}</Text>}
+        {activeTab === 'Trend' && (
+          <Text style={[styles.trend, trend === 'up' ? styles.trendUp : styles.trendDown]}>
+            {trend === 'up' ? '↑' : '↓'}
+          </Text>
         )}
-        {trend === 'down' && (
-          <Text style={[styles.trend, styles.trendDown]}>↓</Text>
-        )}
-        {alert && <View style={styles.alertDot} />}
+        {activeTab === 'Alert' && alert && <View style={styles.alertDot} />}
       </View>
     </View>
   );
@@ -21,48 +56,68 @@ export default function Card({ title, value, trend, alert, style }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: 'yellow', // Dark card background for a professional look
+    backgroundColor: '#2c3e50', // Dark card background
     borderRadius: 12,
     padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 8, // Deep shadow for emphasis
-    flex: 1,
+    elevation: 8,
     marginHorizontal: 8,
-    marginVertical: 10, // Add spacing between cards
+    marginVertical: 10,
   },
   title: {
     fontSize: 16,
-    color: '#BFD7ED', // Light blue for the title to contrast against dark background
+    color: '#BFD7ED',
     marginBottom: 10,
     fontWeight: '700',
+  },
+  tabBar: {
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+    borderBottomColor: '#BFD7ED',
+    marginBottom: 15,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderBottomWidth: 3,
+    borderBottomColor: 'transparent',
+  },
+  tabText: {
+    fontSize: 16,
+    color: '#BFD7ED', // Light text for tabs
+  },
+  activeTab: {
+    borderBottomColor: '#10B981', // Green color when tab is active
+  },
+  activeTabText: {
+    color: '#10B981', // Green color for active tab text
+  },
+  content: {
+    alignItems: 'center',
   },
   value: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#FFFFFF', // White text for clear readability on dark background
-  },
-  valueContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    color: '#FFFFFF',
   },
   trend: {
-    marginLeft: 8,
+    marginTop: 10,
     fontSize: 18,
   },
   trendUp: {
-    color: '#10B981', // Green for positive trends
+    color: '#10B981',
   },
   trendDown: {
-    color: '#EF4444', // Red for negative trends
+    color: '#EF4444',
   },
   alertDot: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#EF4444', // Red dot for alerts
-    marginLeft: 8,
+    backgroundColor: '#EF4444',
   },
 });

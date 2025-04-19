@@ -35,7 +35,7 @@ const Login = ({ navigation }) => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://cwzl7wr9l5.execute-api.us-east-1.amazonaws.com/dev/login', {
+      const response = await fetch('#', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
